@@ -4,7 +4,7 @@ Educational web interface for the Hash Cracker project - deployed on Render.
 
 ## 🚀 Live Demo
 
-**[https://your-app-name.onrender.com](https://your-app-name.onrender.com)**
+**[https://hash-education-portfolio.onrender.com](https://hash-education-portfolio.onrender.com)**
 
 ## 🏗️ Local Development
 
