@@ -14,7 +14,7 @@
 
 *Educational cybersecurity tool demonstrating hash functions and password security*
 
-[🚀 **Live Web Demo**](https://hash-education-portfolio.onrender.com) | [💻 CLI Version](#cli-version) | [🌐 Web Portfolio](#web-portfolio)
+[🚀 **Live Web Demo**](https://hash-education-portfolio.onrender.com) | [💻 CLI Version](#https://hash-education-portfolio.onrender.com) | [🌐 Web Portfolio](#https://hash-education-portfolio.onrender.com)
 
 </div>
 
