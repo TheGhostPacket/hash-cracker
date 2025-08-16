@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hash Cracker Portfolio | PacketWhisperer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 25px;
+            margin: 5px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .section {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .demo-panel {
+            background: rgba(0,0,0,0.2);
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 5px 15px rgba(116,185,255,0.4);
+        }
+
+        .output-area {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            min-height: 120px;
+            margin-top: 15px;
+            word-break: break-all;
+            overflow-wrap: break-word;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .stat-card {
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #feca57;
+            display: block;
+        }
+
+        .learning-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .learning-card {
+            background: rgba(0,0,0,0.2);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid #00b894;
+        }
+
+        .code-preview {
+            background: #2d3748;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .code-preview pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-size: 14px;
+        }
+
+        .warning-box {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: rgba(52, 152, 219, 0.2);
+            border: 1px solid #3498db;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            opacity: 0.8;
+        }
+
+        .social-links {
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #feca57;
+        }
+
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+        }
+
+        .demo-hashes {
+            margin-top: 20px;
+        }
+
+        .demo-hash-item {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .demo-hash-item:hover {
+            background: rgba(0,0,0,0.5);
+        }
+
+        .demo-hash-item .password {
+            font-weight: bold;
+            color: #feca57;
+        }
+
+        .demo-hash-item .hash {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
+            opacity: 0.8;
+        }
+
+        .loading {
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-lock-open"></i> Hash Cracker Portfolio</h1>
+            <div class="subtitle">Educational Cybersecurity Tool & Learning Platform</div>
+            <div>
+                <span class="badge"><i class="fab fa-python"></i> Python</span>
+                <span class="badge"><i class="fas fa-shield-alt"></i> Cybersecurity</span>
+                <span class="badge"><i class="fas fa-graduation-cap"></i> Educational</span>
+                <span class="badge"><i class="fab fa-flask"></i> Flask</span>
+            </div>
+        </header>
+
+        <!-- Project Overview -->
+        <section class="section">
+            <h2><i class="fas fa-info-circle"></i> Project Overview</h2>
+            <p>This educational tool demonstrates how dictionary attacks work against cryptographic hash functions. Built as a learning project to understand password security, hash functions, and cybersecurity fundamentals.</p>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">4</span>
+                    <div>Hash Algorithms</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">100%</span>
+                    <div>Educational Purpose</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">Safe</span>
+                    <div>Demo Only</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Hash Generator -->
+        <section class="section">
+            <h2><i class="fas fa-code"></i> Interactive Hash Generator</h2>
+            <p>See how different algorithms hash the same input:</p>
+            
+            <div class="demo-grid">
+                <div class="demo-panel">
+                    <h3>Input</h3>
+                    <div class="input-group">
+                        <label for="textInput">Text to Hash:</label>
+                        <input type="text" id="textInput" placeholder="Enter text..." value="password123">
+                    </div>
+                    <div class="input-group">
+                        <label for="algorithmSelect">Algorithm:</label>
+                        <select id="algorithmSelect">
+                            <option value="sha256">SHA-256</option>
+                            <option value="md5">MD5</option>
+                            <option value="sha1">SHA-1</option>
+                            <option value="sha512">SHA-512</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="generateHash()">
+                        <i class="fas fa-play"></i> Generate Hash
+                    </button>
+                </div>
+                
+                <div class="demo-panel">
+                    <h3>Hash Output</h3>
+                    <div class="output-area" id="hashOutput">
+                        Click "Generate Hash" to see the result
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Demo Cracking Tool -->
+        <section class="section">
+            <h2><i class="fas fa-search"></i> Demo Hash Cracking</h2>
+            <p>Try cracking these educational demo hashes:</p>
+            
+            <div class="demo-grid">
+                <div class="demo-panel">
+                    <h3>Available Demo Hashes</h3>
+                    <div class="demo-hashes" id="demoHashes">
+                        <div class="demo-hash-item" onclick="selectDemoHash('5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'sha256')">
+                            <div class="password">Password: "password"</div>
+                            <div class="hash">5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8</div>
+                        </div>
+                        <div class="demo-hash-item" onclick="selectDemoHash('2cf24dba4f21d4288094c85b66a5a6c59e9fe49a9ce0e473e8bba76ec1abb0fb', 'sha256')">
+                            <div class="password">Password: "hello"</div>
+                            <div class="hash">2cf24dba4f21d4288094c85b66a5a6c59e9fe49a9ce0e473e8bba76ec1abb0fb</div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group" style="margin-top: 20px;">
+                        <label for="crackHash">Hash to Crack:</label>
+                        <input type="text" id="crackHash" placeholder="Enter a demo hash...">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="crackAlgorithm">Algorithm:</label>
+                        <select id="crackAlgorithm">
+                            <option value="sha256">SHA-256</option>
+                            <option value="md5">MD5</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn" onclick="demoCrack()">
+                        <i class="fas fa-unlock"></i> Crack Hash
+                    </button>
+                    
+                    <div class="loading" id="crackLoading">
+                        <div class="spinner"></div>
+                        <span>Cracking in progress...</span>
+                    </div>
+                </div>
+                
+                <div class="demo-panel">
+                    <h3>Cracking Results</h3>
+                    <div class="output-area" id="crackOutput">
+                        Select a demo hash and click "Crack Hash" to see the attack simulation
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Original Code -->
+        <section class="section">
+            <h2><i class="fas fa-file-code"></i> Original Implementation</h2>
+            <p>Here's the core of my original hash cracking tool:</p>
+            
+            <div class="code-preview">
+                <pre><code class="language-python">import hashlib
+
+def crack_hash(target_hash, wordlist):
+    with open(wordlist, 'r', encoding='utf-8', errors='ignore') as file:
+        for word in file:
+            word = word.strip()
+            hashed_word = hashlib.sha256(word.encode()).hexdigest()
+            if hashed_word == target_hash:
+                print(f"[✅] Password found: {word}")
+                return
+    print("[❌] Password not found in wordlist.")
+
+# Example usage
+if __name__ == "__main__":
+    print("Hash Cracker - SHA256")
+    target_hash = input("Enter the SHA256 hash to crack: ")
+    wordlist_file = input("Enter path to wordlist (e.g., rockyou.txt): ")
+    crack_hash(target_hash, wordlist_file)</code></pre>
+            </div>
+            
+            <p><a href="https://github.com/PacketWhisperer" class="btn btn-secondary" target="_blank">
+                <i class="fab fa-github"></i> View Full Code on GitHub
+            </a></p>
+        </section>
+
+        <!-- Learning Outcomes -->
+        <section class="section">
+            <h2><i class="fas fa-graduation-cap"></i> What I Learned</h2>
+            
+            <div class="learning-grid">
+                <div class="learning-card">
+                    <h3><i class="fas fa-shield-alt"></i> Cybersecurity Concepts</h3>
+                    <ul>
+                        <li>How dictionary attacks work</li>
+                        <li>Password hashing mechanisms</li>
+                        <li>Why strong passwords matter</li>
+                        <li>Hash function properties</li>
+                    </ul>
+                </div>
+                
+                <div class="learning-card">
+                    <h3><i class="fas fa-code"></i> Programming Skills</h3>
+                    <ul>
+                        <li>File I/O operations in Python</li>
+                        <li>Working with hashlib library</li>
+                        <li>String manipulation and encoding</li>
+                        <li>Error handling and validation</li>
+                    </ul>
+                </div>
+                
+                <div class="learning-card">
+                    <h3><i class="fas fa-cogs"></i> Technical Implementation</h3>
+                    <ul>
+                        <li>Algorithm efficiency analysis</li>
+                        <li>Memory management for large files</li>
+                        <li>User interface design</li>
+                        <li>Web application development</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Security Education -->
+        <section class="section">
+            <h2><i class="fas fa-exclamation-triangle"></i> Security Lessons</h2>
+            
+            <div class="warning-box">
+                <h3><i class="fas fa-skull-crossbones"></i> Why Weak Passwords Fail</h3>
+                <p>This tool demonstrates how quickly common passwords can be cracked. Dictionary attacks can test millions of password combinations per second against unsalted hashes.</p>
+            </div>
+            
+            <div class="info-box">
+                <h3><i class="fas fa-lightbulb"></i> Defense Strategies</h3>
+                <ul>
+                    <li><strong>Use strong passwords:</strong> 12+ characters with mixed case, numbers, symbols</li>
+                    <li><strong>Password salting:</strong> Prevents rainbow table attacks</li>
+                    <li><strong>Slow hash functions:</strong> bcrypt, scrypt, Argon2</li>
+                    <li><strong>Multi-factor authentication:</strong> Additional security layers</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Disclaimer -->
+        <section class="section">
+            <h2><i class="fas fa-gavel"></i> Educational Use Only</h2>
+            <div class="warning-box">
+                <p><strong>Important:</strong> This tool is designed exclusively for educational purposes. It demonstrates cybersecurity concepts and should only be used for:</p>
+                <ul>
+                    <li>Learning about password security</li>
+                    <li>Testing your own systems</li>
+                    <li>Authorized security research</li>
+                    <li>Educational demonstrations</li>
+                </ul>
+                <p>Unauthorized use against systems you don't own is illegal and unethical.</p>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p><strong>Built by PacketWhisperer</strong></p>
+            <p>Passionate about cybersecurity, ethical hacking, and education</p>
+            <div class="social-links">
+                <a href="https://github.com/PacketWhisperer" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        async function generateHash() {
+            const text = document.getElementById('textInput').value;
+            const algorithm = document.getElementById('algorithmSelect').value;
+            
+            if (!text) {
+                alert('Please enter some text to hash!');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/generate_hash', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        text: text,
+                        algorithm: algorithm
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.error) {
+                    document.getElementById('hashOutput').innerHTML = `<span style="color: #ff6b6b;">Error: ${result.error}</span>`;
+                } else {
+                    document.getElementById('hashOutput').innerHTML = `
+                        <div><strong>Algorithm:</strong> ${result.algorithm}</div>
+                        <div><strong>Input:</strong> "${result.text}"</div>
+                        <div><strong>Hash:</strong></div>
+                        <div style="word-break: break-all; color: #feca57; margin-top: 10px;">${result.hash}</div>
+                        <div style="margin-top: 10px; opacity: 0.7;"><strong>Length:</strong> ${result.length} characters</div>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('hashOutput').innerHTML = `<span style="color: #ff6b6b;">Error: ${error.message}</span>`;
+            }
+        }
+        
+        function selectDemoHash(hash, algorithm) {
+            document.getElementById('crackHash').value = hash;
+            document.getElementById('crackAlgorithm').value = algorithm;
+        }
+        
+        async function demoCrack() {
+            const hash = document.getElementById('crackHash').value;
+            const algorithm = document.getElementById('crackAlgorithm').value;
+            
+            if (!hash) {
+                alert('Please enter a hash to crack!');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('crackLoading').style.display = 'flex';
+            document.getElementById('crackOutput').innerHTML = 'Starting attack simulation...';
+            
+            try {
+                const response = await fetch('/demo_crack', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        hash: hash,
+                        algorithm: algorithm
+                    })
+                });
+                
+                const result = await response.json();
+                
+                // Hide loading
+                document.getElementById('crackLoading').style.display = 'none';
+                
+                if (result.success) {
+                    document.getElementById('crackOutput').innerHTML = `
+                        <div style="color: #00b894;"><strong><i class="fas fa-check-circle"></i> SUCCESS!</strong></div>
+                        <div><strong>Password found:</strong> <span style="color: #feca57;">"${result.password}"</span></div>
+                        <div><strong>Attempts:</strong> ${result.attempts.toLocaleString()}</div>
+                        <div><strong>Time taken:</strong> ${result.time_taken}s</div>
+                        <div><strong>Rate:</strong> ${result.rate.toLocaleString()} attempts/sec</div>
+                        <div><strong>Algorithm:</strong> ${result.algorithm}</div>
+                        <div style="margin-top: 15px; opacity: 0.8;">
+                            <i class="fas fa-info-circle"></i> This demonstrates why "${result.password}" is a weak password!
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('crackOutput').innerHTML = `
+                        <div style="color: #ff6b6b;"><strong><i class="fas fa-times-circle"></i> Not Found</strong></div>
+                        <div>${result.message}</div>
+                        ${result.attempts ? `<div><strong>Attempts:</strong> ${result.attempts.toLocaleString()}</div>` : ''}
+                        ${result.note ? `<div style="margin-top: 10px; opacity: 0.8;"><i class="fas fa-info-circle"></i> ${result.note}</div>` : ''}
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('crackLoading').style.display = 'none';
+                document.getElementById('crackOutput').innerHTML = `<span style="color: #ff6b6b;">Error: ${error.message}</span>`;
+            }
+        }
+        
+        // Generate initial hash on page load
+        window.onload = () => generateHash();
+    </script>
+</body>
+</html>
