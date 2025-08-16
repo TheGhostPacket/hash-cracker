@@ -258,8 +258,8 @@ This project is designed exclusively for educational purposes:
 
 ## 👤 Author
 
-**PacketWhisperer**
-- 🐙 GitHub: [@PacketWhisperer](https://github.com/TheGhostPacket)
+**TheGhostPacket**
+- 🐙 GitHub: [@TheGhostPacket](https://github.com/TheGhostPacket)
 - 💼 LinkedIn: [Your LinkedIn Profile](#)
 - 🌐 Portfolio: [Live Demo](https://hash-education-portfolio.onrender.com)
 - 📧 Contact: [contact@theghostpacket.com](#)
