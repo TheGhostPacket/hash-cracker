@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, jsonify
 import hashlib
 import os
 import time
+import re
+import math
 
 app = Flask(__name__)
 
@@ -27,6 +29,124 @@ DEMO_WORDLIST = [
     'password', 'hello', 'test', 'admin', '123456', 'test123', 
     'secret', 'login', 'user', 'pass', 'demo', 'sample'
 ]
+
+def analyze_password_strength(password):
+    """Comprehensive password strength analysis"""
+    
+    score = 0
+    feedback = []
+    
+    # Length scoring
+    if len(password) >= 12:
+        score += 25
+    elif len(password) >= 8:
+        score += 15
+        feedback.append("Consider using 12+ characters for better security")
+    else:
+        score += 5
+        feedback.append("Password too short - use at least 8 characters")
+    
+    # Character variety
+    has_lower = bool(re.search(r'[a-z]', password))
+    has_upper = bool(re.search(r'[A-Z]', password))
+    has_digit = bool(re.search(r'\d', password))
+    has_special = bool(re.search(r'[!@#$%^&*(),.?":{}|<>]', password))
+    
+    char_types = sum([has_lower, has_upper, has_digit, has_special])
+    score += char_types * 15
+    
+    if not has_lower:
+        feedback.append("Add lowercase letters")
+    if not has_upper:
+        feedback.append("Add uppercase letters")
+    if not has_digit:
+        feedback.append("Add numbers")
+    if not has_special:
+        feedback.append("Add special characters (!@#$%^&*)")
+    
+    # Common patterns (negative scoring)
+    common_patterns = [
+        r'123', r'abc', r'password', r'admin', r'qwerty',
+        r'111', r'000', r'aaa'
+    ]
+    
+    for pattern in common_patterns:
+        if re.search(pattern, password.lower()):
+            score -= 10
+            feedback.append(f"Avoid common patterns like '{pattern}'")
+    
+    # Sequential characters
+    if re.search(r'(012|123|234|345|456|567|678|789|890)', password):
+        score -= 10
+        feedback.append("Avoid sequential numbers")
+    
+    if re.search(r'(abc|bcd|cde|def|efg|fgh|ghi|hij|ijk|jkl|klm|lmn|mno|nop|opq|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz)', password.lower()):
+        score -= 10
+        feedback.append("Avoid sequential letters")
+    
+    # Repeated characters
+    if re.search(r'(.)\1{2,}', password):
+        score -= 10
+        feedback.append("Avoid repeating characters")
+    
+    # Calculate entropy
+    charset_size = 0
+    if has_lower: charset_size += 26
+    if has_upper: charset_size += 26
+    if has_digit: charset_size += 10
+    if has_special: charset_size += 32
+    
+    entropy = len(password) * math.log2(charset_size) if charset_size > 0 else 0
+    
+    # Time to crack estimation (simplified)
+    attempts_per_second = 1000000000  # 1 billion per second (modern GPU)
+    combinations = charset_size ** len(password) if charset_size > 0 else 1
+    seconds_to_crack = combinations / (2 * attempts_per_second)  # Average case
+    
+    # Convert to human readable time
+    if seconds_to_crack < 1:
+        crack_time = "Instantly"
+    elif seconds_to_crack < 60:
+        crack_time = f"{seconds_to_crack:.1f} seconds"
+    elif seconds_to_crack < 3600:
+        crack_time = f"{seconds_to_crack/60:.1f} minutes"
+    elif seconds_to_crack < 86400:
+        crack_time = f"{seconds_to_crack/3600:.1f} hours"
+    elif seconds_to_crack < 31536000:
+        crack_time = f"{seconds_to_crack/86400:.1f} days"
+    else:
+        crack_time = f"{seconds_to_crack/31536000:.1f} years"
+    
+    # Determine strength level
+    if score >= 80:
+        strength = "Very Strong"
+        color = "#27ae60"
+    elif score >= 60:
+        strength = "Strong" 
+        color = "#2ecc71"
+    elif score >= 40:
+        strength = "Moderate"
+        color = "#f39c12"
+    elif score >= 20:
+        strength = "Weak"
+        color = "#e67e22"
+    else:
+        strength = "Very Weak"
+        color = "#e74c3c"
+    
+    return {
+        'score': min(100, max(0, score)),
+        'strength': strength,
+        'color': color,
+        'entropy': round(entropy, 1),
+        'crack_time': crack_time,
+        'feedback': feedback[:3],  # Limit to top 3 suggestions
+        'has_lower': has_lower,
+        'has_upper': has_upper,
+        'has_digit': has_digit,
+        'has_special': has_special,
+        'length': len(password)
+    }
 
 @app.route('/')
 def home():
@@ -63,6 +183,18 @@ def generate_hash():
         })
     except Exception as e:
         return jsonify({'error': str(e)})
+
+@app.route('/analyze_password', methods=['POST'])
+def analyze_password():
+    """Analyze password strength endpoint"""
+    data = request.json
+    password = data.get('password', '')
+    
+    if not password:
+        return jsonify({'error': 'No password provided'})
+    
+    analysis = analyze_password_strength(password)
+    return jsonify(analysis)
 
 @app.route('/demo_crack', methods=['POST'])
 def demo_crack():
@@ -123,29 +255,50 @@ def get_demo_hashes():
     """Return available demo hashes for testing"""
     return jsonify(DEMO_HASHES)
 
-@app.route('/code')
-def show_code():
-    """Display the original code with syntax highlighting"""
-    original_code = '''import hashlib
-
-def crack_hash(target_hash, wordlist):
-    with open(wordlist, 'r', encoding='utf-8', errors='ignore') as file:
-        for word in file:
-            word = word.strip()
-            hashed_word = hashlib.sha256(word.encode()).hexdigest()
-            if hashed_word == target_hash:
-                print(f"[✅] Password found: {word}")
-                return
-    print("[❌] Password not found in wordlist.")
-
-# Example usage
-if __name__ == "__main__":
-    print("Hash Cracker - SHA256")
-    target_hash = input("Enter the SHA256 hash to crack: ")
-    wordlist_file = input("Enter path to wordlist (e.g., rockyou.txt): ")
-    crack_hash(target_hash, wordlist_file)'''
+@app.route('/compare_algorithms', methods=['POST'])
+def compare_algorithms():
+    """Compare multiple hash algorithms"""
+    data = request.json
+    text = data.get('text', '')
+    algorithms = data.get('algorithms', [])
     
-    return render_template('code.html', code=original_code)
+    if not text:
+        return jsonify({'error': 'No text provided'})
+    
+    if not algorithms:
+        return jsonify({'error': 'No algorithms specified'})
+    
+    results = {}
+    
+    for algorithm in algorithms:
+        try:
+            start_time = time.time()
+            
+            if algorithm == 'sha256':
+                hash_result = hashlib.sha256(text.encode()).hexdigest()
+            elif algorithm == 'md5':
+                hash_result = hashlib.md5(text.encode()).hexdigest()
+            elif algorithm == 'sha1':
+                hash_result = hashlib.sha1(text.encode()).hexdigest()
+            elif algorithm == 'sha512':
+                hash_result = hashlib.sha512(text.encode()).hexdigest()
+            else:
+                continue
+            
+            end_time = time.time()
+            processing_time = (end_time - start_time) * 1000  # Convert to milliseconds
+            
+            results[algorithm] = {
+                'hash': hash_result,
+                'length': len(hash_result),
+                'time_ms': round(processing_time, 2),
+                'algorithm': algorithm.upper()
+            }
+            
+        except Exception as e:
+            results[algorithm] = {'error': str(e)}
+    
+    return jsonify(results)
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
