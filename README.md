@@ -14,7 +14,7 @@
 
 *Educational cybersecurity tool demonstrating hash functions and password security*
 
-[🚀 **Live Web Demo**](https://your-app-name.onrender.com) | [💻 CLI Version](#cli-version) | [🌐 Web Portfolio](#web-portfolio)
+[🚀 **Live Web Demo**](https://hash-education-portfolio.onrender.com) | [💻 CLI Version](#cli-version) | [🌐 Web Portfolio](#web-portfolio)
 
 </div>
 
@@ -45,12 +45,12 @@ This project demonstrates cybersecurity fundamentals through an educational hash
 ## 🚀 Quick Start
 
 ### **Try the Live Web Demo** 
-👉 **[https://your-app-name.onrender.com](https://your-app-name.onrender.com)**
+👉 **[https://hash-education-portfolio.onrender.com](https://hash-education-portfolio.onrender.com)**
 
 ### **Use the CLI Version**
 ```bash
 # Clone the repository
-git clone https://github.com/PacketWhisperer/hash-cracker.git
+git clone https://github.com/TheGhostPacket/hash-cracker.git
 cd hash-cracker
 
 # Run the enhanced CLI version
@@ -197,7 +197,7 @@ hash-cracker/
 
 ### **Web Version**
 - **Platform**: Render.com
-- **URL**: [https://your-app-name.onrender.com](https://your-app-name.onrender.com)
+- **URL**: [https://hash-education-portfolio.onrender.com](https://hash-education-portfolio.onrender.com)
 - **Stack**: Python 3.11, Flask 2.3.3, Gunicorn
 - **Features**: Auto-deployment from GitHub, custom domain support
 
@@ -259,10 +259,10 @@ This project is designed exclusively for educational purposes:
 ## 👤 Author
 
 **PacketWhisperer**
-- 🐙 GitHub: [@PacketWhisperer](https://github.com/PacketWhisperer)
+- 🐙 GitHub: [@PacketWhisperer](https://github.com/TheGhostPacket)
 - 💼 LinkedIn: [Your LinkedIn Profile](#)
-- 🌐 Portfolio: [Live Demo](https://your-app-name.onrender.com)
-- 📧 Contact: [your.email@example.com](#)
+- 🌐 Portfolio: [Live Demo](https://hash-education-portfolio.onrender.com)
+- 📧 Contact: [contact@theghostpacket.com](#)
 =======
 ![License](https://img.shields.io/badge/License-Educational-green.svg)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)
@@ -447,7 +447,7 @@ Contributions are welcome! Areas for improvement:
 3. Explore GPU-accelerated cracking
 4. Understand timing attacks
 
-## 👤 Built by [PacketWhisperer](https://github.com/PacketWhisperer)
+## 👤 Built by [TheGhostPacket](https://github.com/TheGhostPacket)
 
 *Remember: With great power comes great responsibility. Use this knowledge to build more secure systems, not to break them.*
 >>>>>>> 0b6ccb67b36ebbe98015f27328ef7739e2ff6ddc
